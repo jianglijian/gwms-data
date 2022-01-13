@@ -1,2 +1,0 @@
-insert into `bas_resource` (`created_time`,`creator_id`,`updated_time`,`updator_id`,`domain_id`,`lock_version`,`resource_code`,`resource_name`,`parent_code`,`url`,`resource_type`,`device_type`)VALUES (NOW(),1,NOW(),1,10000,1, '360','Data Analysis','WEB','/resouce','MENU','web');
-insert into `bas_resource` (`created_time`,`creator_id`,`updated_time`,`updator_id`,`domain_id`,`lock_version`,`resource_code`,`resource_name`,`parent_code`,`url`,`resource_type`,`device_type`)VALUES (NOW(),1,NOW(),1,10000,1, '360.100','Data Analysis/ABC Analysis','360','/resouce','SUB_MENU','web');

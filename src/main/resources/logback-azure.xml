@@ -1,0 +1,41 @@
+<configuration>
+    <appender name="dev" class="com.oasis.logging.flume.logbackAppender.AvroAppender">
+        <logServerList>msusw-flume-1.800best.com:4141;msusw-flume-2.800best.com:4141?isRandomize=true</logServerList>
+        <application>gwms-data-azure-uat</application>
+        <service>gwms-data-azure-uat</service>
+        <encoder>
+            <pattern>%d [%p] %C [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+    <!-- -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %p (%file:%line\)- %m%n</pattern>
+            <charset>UTF8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="baselog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>../log/gwms-data.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>../log/gwms-data.log.%d.%i</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 64 MB -->
+                <maxFileSize>128 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                %d %p (%file:%line\)- %m%n
+            </pattern>
+            <charset>UTF-8</charset> <!--  -->
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="dev"/>
+        <appender-ref ref="baselog" />
+    </root>
+
+</configuration>

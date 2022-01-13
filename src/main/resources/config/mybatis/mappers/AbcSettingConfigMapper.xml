@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.best.gwms.data.dao.AbcSettingConfigDao">
+
+    <sql id="tableSection">abc_setting_config</sql>
+
+
+    <!-- Create Po -->
+    <insert id="createPo" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into
+        <include refid="tableSection"/>
+        (
+        <include refid="com.best.gwms.data.BaseMapper.abstractPoColumn4Create"/>
+        <!--12-->wh_id,
+        <!--13-->level_a,
+        <!--14-->level_b,
+        <!--15-->level_c,
+        <!--16-->level_d,
+        <!--17-->level_e,
+        <!--18-->analyze_type,
+        <!--19-->degree_amount )
+        values (
+        <include refid="com.best.gwms.data.BaseMapper.abstractPoValue4Create"/>
+        <!--12-->#{whId,jdbcType=BIGINT},
+        <!--13-->#{levelA,jdbcType=DOUBLE},
+        <!--14-->#{levelB,jdbcType=DOUBLE},
+        <!--15-->#{levelC,jdbcType=DOUBLE},
+        <!--16-->#{levelD,jdbcType=DOUBLE},
+        <!--17-->#{levelE,jdbcType=DOUBLE},
+        <!--18-->#{analyzeType,jdbcType=BIGINT},
+        <!--19-->#{degreeAmount,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!-- update Po -->
+
+    <update id="updatePo">
+
+        update
+        <include refid="tableSection"/>
+
+        set
+
+        <include refid="com.best.gwms.data.BaseMapper.abstractPoColumn4Update"/>
+
+        <!--12-->wh_id = #{whId,jdbcType=BIGINT},
+        <!--13-->level_a = #{levelA,jdbcType=DOUBLE},
+        <!--14-->level_b = #{levelB,jdbcType=DOUBLE},
+        <!--15-->level_c = #{levelC,jdbcType=DOUBLE},
+        <!--16-->level_d = #{levelD,jdbcType=DOUBLE},
+        <!--17-->level_e = #{levelE,jdbcType=DOUBLE},
+        <!--18-->analyze_type = #{analyzeType,jdbcType=BIGINT},
+        <!--19-->degree_amount = #{degreeAmount,jdbcType=INTEGER}
+        where ID = #{id,jdbcType=BIGINT} and lock_version = #{lockVersion,jdbcType=BIGINT}
+
+    </update>
+
+
+    <!-- result map-->
+    <resultMap id="resultMap" type="com.best.gwms.data.model.po.AbcSettingConfig"
+               extends="com.best.gwms.data.BaseMapper.abstractPoResultMap">
+        <!--12-->
+        <result column="wh_id" jdbcType="BIGINT" property="whId"/>
+        <!--13-->
+        <result column="level_a" jdbcType="DOUBLE" property="levelA"/>
+        <!--14-->
+        <result column="level_b" jdbcType="DOUBLE" property="levelB"/>
+        <!--15-->
+        <result column="level_c" jdbcType="DOUBLE" property="levelC"/>
+        <!--16-->
+        <result column="level_d" jdbcType="DOUBLE" property="levelD"/>
+        <!--17-->
+        <result column="level_e" jdbcType="DOUBLE" property="levelE"/>
+        <!--18-->
+        <result column="analyze_type" jdbcType="BIGINT" property="analyzeType"/>
+        <!--19-->
+        <result column="degree_amount" jdbcType="INTEGER" property="degreeAmount"/>
+    </resultMap>
+
+    <!-- general search clause-->
+    <sql id="selectSection">
+        <!-- common -->
+        <!-- please join other table here if necessary-->
+        <where>
+            <include refid="com.best.gwms.data.BaseMapper.searchPoWhereCommonSection"/>
+            <!-- please add other clause here if necessary-->
+        </where>
+    </sql>
+
+    <!-- search Po -->
+    <select id="searchPo" resultMap="resultMap">
+        select o.* from
+        <include refid="tableSection"/>
+        o
+        <include refid="selectSection"/>
+    </select>
+
+    <!-- search Po count-->
+    <select id="countResult" resultType="java.lang.Long">
+        select count(o.id) from
+        <include refid="tableSection"/>
+        o
+        <include refid="selectSection"/>
+    </select>
+
+    <!-- delete Po -->
+    <delete id="deletePo" parameterType="long">
+        <include refid="com.best.gwms.data.BaseMapper.deletePo"/>
+    </delete>
+
+    <!-- get Po by id-->
+    <select id="getPoById" resultMap="resultMap" parameterType="long">
+        <include refid="com.best.gwms.data.BaseMapper.getPoById"/>
+    </select>
+
+    <!-- get Po by idList-->
+    <select id="getPoByIdList" resultMap="resultMap">
+        <include refid="com.best.gwms.data.BaseMapper.getPoByIdList"/>
+    </select>
+    <!-- get Po by idSet-->
+    <select id="getPoByIdSet" resultMap="resultMap">
+        <include refid="com.best.gwms.data.BaseMapper.getPoByIdSet"/>
+    </select>
+
+    <select id="getConfigByWhId" resultMap="resultMap">
+        select * from
+        <include refid="tableSection"/>
+        where wh_id = #{whId,jdbcType=BIGINT}
+    </select>
+
+    <!-- delete Po by idList-->
+    <delete id="deletePoList" parameterType="java.util.List">
+        <include refid="com.best.gwms.data.BaseMapper.deletePoList"/>
+    </delete>
+
+    <delete id="deleteByWhId">
+        delete  from abc_setting_config
+        where wh_id = #{whId,jdbcType=BIGINT}
+    </delete>
+</mapper>
+

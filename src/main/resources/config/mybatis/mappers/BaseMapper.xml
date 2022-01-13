@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 这里面放一些公用的语句 -->
+<mapper namespace="com.best.gwms.data.BaseMapper">
+    <sql id="abstractPoColumn4Create">
+        <!-- 1-->id,
+        <!-- 2-->created_time,
+        <!-- 3-->creator_id,
+        <!-- 4-->updated_time,
+        <!-- 5-->updator_id,
+        <!-- 7-->lock_version,
+        <!-- 8-->udf1,
+        <!-- 9-->udf2,
+        <!-- 10-->udf3,
+        <!-- 11-->udf4,
+    </sql>
+    <sql id="abstractPoNoIdColumn4Create">
+        <!-- 2-->created_time,
+        <!-- 3-->creator_id,
+        <!-- 4-->updated_time,
+        <!-- 5-->updator_id,
+        <!-- 7-->lock_version,
+        <!-- 8-->udf1,
+        <!-- 9-->udf2,
+        <!-- 10-->udf3,
+        <!-- 11-->udf4,
+    </sql>
+    <sql id="abstractPoColumn4SnapStockCreate">
+        <!-- 1-->id,
+        <!-- 2-->created_time,
+        <!-- 3-->creator_id,
+        <!-- 4-->updated_time,
+        <!-- 5-->updator_id,
+        <!-- 7-->lock_version,
+
+    </sql>
+    <sql id="abstractPoValue4Create">
+        <!-- 1-->#{id,jdbcType=BIGINT},
+        <!-- 2-->#{createdTime,jdbcType=TIMESTAMP},
+        <!-- 3-->#{creatorId,jdbcType=BIGINT},
+        <!-- 4-->#{updatedTime,jdbcType=TIMESTAMP},
+        <!-- 5-->#{updatorId,jdbcType=BIGINT},
+        <!-- 7-->#{lockVersion,jdbcType=BIGINT},
+        <!-- 8-->#{udf1,jdbcType=VARCHAR},
+        <!-- 9-->#{udf2,jdbcType=VARCHAR},
+        <!-- 10-->#{udf3,jdbcType=VARCHAR},
+        <!-- 11-->#{udf4,jdbcType=VARCHAR},
+    </sql>
+    <sql id="abstractPoNoIdValue4Create">
+        <!-- 2-->#{createdTime,jdbcType=TIMESTAMP},
+        <!-- 3-->#{creatorId,jdbcType=BIGINT},
+        <!-- 4-->#{updatedTime,jdbcType=TIMESTAMP},
+        <!-- 5-->#{updatorId,jdbcType=BIGINT},
+        <!-- 7-->#{lockVersion,jdbcType=BIGINT},
+        <!-- 8-->#{udf1,jdbcType=VARCHAR},
+        <!-- 9-->#{udf2,jdbcType=VARCHAR},
+        <!-- 10-->#{udf3,jdbcType=VARCHAR},
+        <!-- 11-->#{udf4,jdbcType=VARCHAR},
+    </sql>
+    <sql id="abstractPoValue4StockSnapCreate">
+        <!-- 1-->#{id,jdbcType=BIGINT},
+        <!-- 2-->#{createdTime,jdbcType=TIMESTAMP},
+        <!-- 3-->#{creatorId,jdbcType=BIGINT},
+        <!-- 4-->#{updatedTime,jdbcType=TIMESTAMP},
+        <!-- 5-->#{updatorId,jdbcType=BIGINT},
+        <!-- 7-->#{lockVersion,jdbcType=BIGINT},
+
+    </sql>
+    <sql id="abstractPoColumn4Update">
+        <!-- 4-->updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+        <!-- 5-->updator_id = #{updatorId,jdbcType=BIGINT},
+        <!-- 7-->lock_version = lock_version + 1,
+        <!-- 8-->udf1 = #{udf1,jdbcType=VARCHAR},
+        <!-- 9-->udf2 = #{udf2,jdbcType=VARCHAR},
+        <!-- 10-->udf3 = #{udf3,jdbcType=VARCHAR},
+        <!-- 11-->udf4 = #{udf4,jdbcType=VARCHAR},
+
+    </sql>
+
+    <resultMap id="abstractPoResultMap" type="com.best.gwms.data.model.bas.AbstractPo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="creator_id" jdbcType="BIGINT" property="creatorId"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+        <result column="updator_id" jdbcType="BIGINT" property="updatorId"/>
+        <result column="lock_version" jdbcType="BIGINT" property="lockVersion"/>
+        <result column="udf1" jdbcType="VARCHAR" property="udf1"/>
+        <result column="udf2" jdbcType="VARCHAR" property="udf2"/>
+        <result column="udf3" jdbcType="VARCHAR" property="udf3"/>
+        <result column="udf4" jdbcType="VARCHAR" property="udf4"/>
+    </resultMap>
+
+
+
+    <sql id="searchPoWhereCommonSection">
+        <include refid="com.best.gwms.data.BaseMapper.searchPoWhereGloableSection"/>
+    </sql>
+
+    <!--  -->
+    <sql id="searchPoWhereGloableSection">
+        <if test="createTimeFrom != null">
+            <![CDATA[ and o.created_time >= #{createTimeFrom} ]]>
+        </if>
+
+        <if test="createTimeTo != null">
+            <![CDATA[ and o.created_time <= #{createTimeTo} ]]>
+        </if>
+        <if test="updateTimeFrom != null">
+            and o.updated_time >= #{updateTimeFrom}
+        </if>
+
+        <if test="updateTimeTo != null">
+            <![CDATA[ and o.updated_time <= #{updateTimeTo} ]]>
+        </if>
+
+    </sql>
+
+    <sql id="dataAuthority">
+        <include refid="com.best.gwms.data.BaseMapper.searchPoWhereCommonSection"/>
+        <if test="whId != null">
+            and o.wh_id = #{whId}
+        </if>
+        <if test="ownerId != null">
+            and o.owner_id = #{ownerId}
+        </if>
+        <if test="@com.best.gwaybill.util.EasyUtil@isCollectionNotEmpty(whIdList)">
+            and o.wh_id in
+            <foreach item="item" index="index" collection="whIdList" open="(" separator="," close=")">
+                #{whIdList[${index}]}
+            </foreach>
+        </if>
+        <if test="@com.best.gwaybill.util.EasyUtil@isCollectionNotEmpty(ownerIdList)">
+            and o.owner_id in
+            <foreach item="item" index="index" collection="ownerIdList" open="(" separator="," close=")">
+                #{ownerIdList[${index}]}
+            </foreach>
+        </if>
+    </sql>
+    <!-- 一些常用sql的片段 -->
+
+    <!-- get Po by id-->
+    <sql id="getPoById">
+        select o.* from
+        <include refid="tableSection"/>
+        o
+        where o.id = #{id,jdbcType=BIGINT}
+    </sql>
+
+
+    <!-- get Po by idList-->
+    <sql id="getPoByIdList">
+        select o.* from
+        <include refid="tableSection"/>
+        o
+        where o.id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{idList[${index}]}
+        </foreach>
+    </sql>
+    <!-- get Po by idSet-->
+    <sql id="getPoByIdSet">
+        select o.* from
+        <include refid="tableSection"/>
+        o
+        where o.id in
+        <foreach item="item" index="index" collection="idSet" open="(" separator="," close=")">
+            #{idList[${index}]}
+        </foreach>
+    </sql>
+    <!-- deletePoList-->
+    <sql id="deletePoList">
+        DELETE o from
+        <include refid="tableSection"/>
+        o
+        where o.id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{idList[${index}]}
+        </foreach>
+    </sql>
+
+    <!-- delete Po -->
+    <sql id="deletePo">
+        delete o from
+        <include refid="tableSection"/>
+        o
+        where o.id = #{id,jdbcType=BIGINT}
+    </sql>
+
+
+    <!-- delete Po -->
+    <sql id="getPoListByCode">
+        select * from
+        <include refid="tableSection"/>
+        o
+        where o.#{field, jdbcType= VARCHAR}# = #{code,jdbcType=VARCHAR}
+    </sql>
+
+</mapper>
